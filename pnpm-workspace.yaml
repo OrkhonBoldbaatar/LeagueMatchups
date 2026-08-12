@@ -1,0 +1,7 @@
+packages:
+  - "frontend"
+  - "backend"
+  - "shared"
+allowBuilds:
+  unrs-resolver: true
+  esbuild: true
