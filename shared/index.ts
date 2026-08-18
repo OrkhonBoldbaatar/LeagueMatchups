@@ -1,0 +1,1 @@
+    export const IS_SHARED_WORKING = "Hello from the shared folder!";
