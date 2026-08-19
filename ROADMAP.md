@@ -1,23 +1,29 @@
-# The Master Plan
+# LeagueMatchups - The True Enterprise Master Plan
 
-## Step 1: Infrastructure
-- **Git Task:** Push local monorepo to GitHub via IDE.
-- **DevOps Task:** Deploy frontend to Vercel.
-- **Doc Task:** Write the Root `README.md` (Architecture & Schema).
+## Step 1: The "Walking Skeleton" (Infrastructure & CI/CD)
+- **Init:** Setup pnpm monorepo, SvelteKit (frontend), NestJS (backend), and Turborepo. *(Done)*
+- **Version Control:** Git init, GitHub push, and Shared folder linking. *(Done)*
+- **Frontend Pipeline:** Deploy the empty SvelteKit frontend to Vercel to establish Continuous Deployment.
+- **Backend Pipeline:** Deploy the empty NestJS backend to Render to establish Continuous Deployment.
 
-## Step 2: The Mock API (Backend + Shared)
-- **Test Task (TDD):** Write a Jest test for a mock endpoint.
-- **Code Task:** Create the shared type and NestJS endpoint to pass the test.
-- **Doc Task:** Implement Swagger for the backend API documentation.
+## Step 2: The Mock API (Backend First)
+- Create a mockup of the data (Ahri vs. Irelia stats and tips).
+- Build the NestJS Controller and Service to serve that mock data.
+- Write Jest Unit Tests to verify the endpoints work.
+- Test the endpoints manually using Swagger UI.
 
-## Step 3: The UI Components (Frontend Isolation)
-- **Doc Task:** Install and configure Storybook.
-- **Test Task (TDD):** Write Vitest tests for your UI components.
-- **Code Task:** Build the Svelte components in Storybook until they pass the tests.
+## Step 3: Component-Driven UI (Storybook)
+- Install and configure Storybook in the frontend.
+- Build the UI components (Matchup Cards, Search Bar, Champion Select) completely in isolation.
+- Ensure components look perfect before hooking them up to any data.
 
-## Step 4: The UI Integration (Frontend Assembly)
-- **Code Task:** Assemble the Storybook components onto the actual SvelteKit pages and fetch the backend mock data.
-- **Test Task:** Write a Playwright End-to-End test to simulate a user navigating the site.
+## Step 4: Frontend Integration
+- Set up Environment Variables so the frontend knows how to talk to `localhost:3000` (for you) and the live `Render` URL (for the internet).
+- Connect SvelteKit to the NestJS Mock API.
+- Render the Storybook components on the actual pages using the mock data.
 
-## Step 5: The Database
-- **Database Task:** Set up MongoDB and swap the mock data in the backend for real database queries.
+## Step 5: Database & User Accounts (The Real Deal)
+- **Database:** Set up MongoDB and swap the mock data for real database queries.
+- **Auth:** Build a JWT login system so users can create accounts.
+- **Features:** Allow logged-in users to submit and upvote/downvote matchup tips.
+- **Security:** Add the final production passwords (MongoDB URI, JWT Secrets) to the Vercel and Render dashboards.
