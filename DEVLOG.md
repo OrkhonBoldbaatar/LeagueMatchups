@@ -158,3 +158,34 @@ New-Item -ItemType File -Name "README.md"
   "matchupTips": "Hold your charm until she dashes to a low-health minion."
 }
 ```
+
+## Step 6: Production Deployments & CI/CD Setup (The "Walking Skeleton")
+
+### Backend Deployment (Render - Free Tier)
+Deployed the empty NestJS backend to establish a live API URL before building features.
+
+*   **Platform:** Render (Web Service)
+*   **Region:** Frankfurt (EU)
+*   **Root Directory:** *(Left completely blank so Render reads the entire monorepo and `pnpm-workspace.yaml`)*
+*   **Build Command:**
+    ```bash
+    pnpm install && pnpm turbo run build --filter=backend
+    ```
+    *(Installs root dependencies, then uses Turborepo to only compile the backend into the `dist` folder).*
+*   **Start Command:**
+    ```bash
+    node backend/dist/main.js
+    ```
+    *(Runs the compiled TypeScript file for NestJS).*
+*   **Live Backend URL:** `https://leaguematchups.onrender.com/`
+*   **Result:** Verified the `shared` folder successfully printed "Hello from the shared folder!" in the browser.
+
+### Frontend Deployment (Vercel)
+Deployed the empty SvelteKit frontend and connected it to the live backend URL.
+
+*   **Platform:** Vercel
+*   **Framework Preset:** SvelteKit (Auto-detected)
+*   **Root Directory:** `frontend`
+*   **Environment Variables:**
+    *   `PUBLIC_API_URL` = `https://leaguematchups.onrender.com`
+*   **Result:** The frontend build successfully passed, establishing an automated CI/CD pipeline for both frontend and backend on every push to `main`.
