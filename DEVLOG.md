@@ -189,3 +189,33 @@ Deployed the empty SvelteKit frontend and connected it to the live backend URL.
 *   **Environment Variables:**
     *   `PUBLIC_API_URL` = `https://leaguematchups.onrender.com`
 *   **Result:** The frontend build successfully passed, establishing an automated CI/CD pipeline for both frontend and backend on every push to `main`.
+
+## Step 7: The Full-Stack Sandbox (Posture Check & Webhook)
+
+### Backend: Discord Webhook
+Created a test endpoint to ping a Discord channel to verify full-stack communication and CORS.
+
+*   **`backend/src/app.service.ts`:** Implemented `postureCheck()` using the native `fetch` API to send a POST request with a JSON payload to a Discord webhook URL.
+*   **`backend/src/app.controller.ts`:** Created a `@Post('posture')` endpoint to expose the service function to the frontend.
+
+### Frontend: The Wake-Up Button
+Built a UI button to trigger the backend endpoint.
+
+*   **`frontend/src/routes/+page.svelte`:** Added a button that executes a `fetch` request to the backend `/posture` route.
+*   **State Management:** Implemented an `isLoading` boolean state. When clicked, the button disables itself and changes text to "Sending..." to prevent spam while waiting for the server's response.
+
+### Testing Setup: The `nodenext` TypeScript Fix
+**The Problem:** The Jest test file (`app.controller.spec.ts`) showed red syntax errors for global Jest variables like `describe`, `it`, and `expect`.
+**The Cause:** The `backend/tsconfig.json` uses `"moduleResolution": "nodenext"`. This strict mode mimics modern Node.js and prevents TypeScript from automatically loading global types from the `node_modules` folder (like `@types/jest`) unless explicitly imported.
+**The Fix:** Added a `"types"` array to explicitly force the TypeScript compiler to load the Jest and Node dictionaries into the global scope.
+
+**backend/tsconfig.json Updates:**
+```json
+{
+  "compilerOptions": {
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "types": ["jest", "node"]
+    // ... remaining settings
+  }
+}

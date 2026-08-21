@@ -1,29 +1,45 @@
 # LeagueMatchups - The True Enterprise Master Plan
 
-## Step 1: The "Walking Skeleton" (Infrastructure & CI/CD)
+## Step 1: The Walking Skeleton (Infrastructure & CI/CD)
 - **Init:** Setup pnpm monorepo, SvelteKit (frontend), NestJS (backend), and Turborepo. *(Done)*
 - **Version Control:** Git init, GitHub push, and Shared folder linking. *(Done)*
-- **Frontend Pipeline:** Deploy the empty SvelteKit frontend to Vercel to establish Continuous Deployment.
-- **Backend Pipeline:** Deploy the empty NestJS backend to Render to establish Continuous Deployment.
+- **Frontend Pipeline:** Deploy the empty SvelteKit frontend to Vercel.
+- **Backend Pipeline:** Deploy the empty NestJS backend to Render.
+- **CI Setup:** Configure GitHub Actions to run linters and test suites on every pull request.
 
-## Step 2: The Mock API (Backend First)
-- Create a mockup of the data (Ahri vs. Irelia stats and tips).
-- Build the NestJS Controller and Service to serve that mock data.
-- Write Jest Unit Tests to verify the endpoints work.
-- Test the endpoints manually using Swagger UI.
+## Step 1.5: Render Wake-up & Posture System (Permanent Utility)
+- **Backend (Jest TDD):**
+  - Write Jest unit tests in `app.controller.spec.ts` (mocking Discord webhook requests with spies). *(Next)*
+  - Implement `app.service.ts` and `app.controller.ts` webhook endpoint to make tests pass. *(Done)*
+- **Frontend (UI & Playwright Verification):**
+  - Implement button in SvelteKit with `isLoading` disabled states and visual feedback. *(In Progress)*
+  - Setup Playwright in the frontend workspace.
+  - Write Playwright E2E test verifying the button locks, prevents spam-clicks, and recovers on response. (Test-After)
 
-## Step 3: Component-Driven UI (Storybook)
-- Install and configure Storybook in the frontend.
-- Build the UI components (Matchup Cards, Search Bar, Champion Select) completely in isolation.
-- Ensure components look perfect before hooking them up to any data.
+## Step 2: The Mock API (Backend Matchup Service)
+- **Data Contract:** Define TypeScript types/DTOs for champion matchup data (e.g., Ahri vs. Irelia) in the shared package.
+- **Backend (Jest TDD):**
+  - Write Jest tests defining expected matchup endpoints, status codes, and payload structures.
+  - Implement NestJS Matchup Controller & Service to serve data and satisfy the tests.
+- **Verification:** Configure Swagger UI / OpenAPI docs and verify manually.
 
-## Step 4: Frontend Integration
-- Set up Environment Variables so the frontend knows how to talk to `localhost:3000` (for you) and the live `Render` URL (for the internet).
-- Connect SvelteKit to the NestJS Mock API.
-- Render the Storybook components on the actual pages using the mock data.
+## Step 3: Component-Driven UI & Frontend Unit Testing
+- **Storybook:** Install and configure Storybook for isolated component development.
+- **UI Components:** Build Matchup Cards, Search Bar, and Champion Select components.
+- **Frontend Unit Tests (Vitest TDD):** Write Vitest unit tests *before* writing client-side sorting, stat calculations, and filtering logic files.
 
-## Step 5: Database & User Accounts (The Real Deal)
-- **Database:** Set up MongoDB and swap the mock data for real database queries.
-- **Auth:** Build a JWT login system so users can create accounts.
-- **Features:** Allow logged-in users to submit and upvote/downvote matchup tips.
-- **Security:** Add the final production passwords (MongoDB URI, JWT Secrets) to the Vercel and Render dashboards.
+## Step 4: Full-Stack Integration & E2E Testing
+- **Environment Config:** Set up environment variables for local (`localhost:3000`) and production (Render).
+- **Data Wiring:** Connect SvelteKit data loaders to the NestJS API.
+- **Frontend E2E Tests (Playwright):** Write Playwright tests verifying the complete flow: searching a champion, loading the matchup card, and interacting with UI.
+
+## Step 5: Database, Authentication & User Actions
+- **Database:** Connect MongoDB with Mongoose/Prisma to replace mock data.
+- **Auth (Jest TDD):**
+  - Write Jest tests for JWT issuance, password hashing, and route protection.
+  - Implement authentication controllers, guards, and services.
+- **User Features (Jest TDD + Playwright UI):**
+  - Jest tests & backend implementation for submitting tips and upvoting/downvoting.
+  - SvelteKit UI components implementation (Test-After via Playwright).
+- **Integration Tests (Playwright):** End-to-end tests for user registration, login, and tip submission.
+- **Production Secrets:** Store MongoDB URI and JWT secrets in Vercel and Render dashboards.
